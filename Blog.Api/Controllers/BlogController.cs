@@ -19,4 +19,11 @@ public class BlogController : ControllerBase
   {
     return Ok(new BlogPostList() { });
   }
+
+  [HttpPost("/posts")]
+  public IActionResult Create()
+  {
+    return Ok(new BlogPostList() { });
+  }
+
 }
