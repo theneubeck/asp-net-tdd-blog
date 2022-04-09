@@ -23,7 +23,12 @@ public class BlogController : ControllerBase
   [HttpPost("/posts")]
   public IActionResult Create()
   {
-    return new ObjectResult(new BlogPostList() { }) { StatusCode = StatusCodes.Status201Created};
+    return new ObjectResult(new BlogPost()
+    {
+        Id = new Guid(),
+        Title = "Title",
+        Body = "Body"
+    }) { StatusCode = StatusCodes.Status201Created};
   }
 
 }
