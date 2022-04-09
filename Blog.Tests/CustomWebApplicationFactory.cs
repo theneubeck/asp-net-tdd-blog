@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Blog.Api.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -11,32 +10,21 @@ namespace Blog.Tests;
 public class CustomWebApplicationFactory<TStartup>
     : WebApplicationFactory<TStartup> where TStartup : class
 {
-  protected override void ConfigureWebHost(IWebHostBuilder builder)
-  {
-    builder.ConfigureServices(services =>
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-      var descriptor = services.SingleOrDefault(
-              d => d.ServiceType ==
-                  typeof(DbContextOptions<ApplicationDbContext>));
+        builder.ConfigureServices(services =>
+        {
+            var sp = services.BuildServiceProvider();
 
-      services.Remove(descriptor);
+            using (var scope = sp.CreateScope())
+            {
+                var scopedServices = scope.ServiceProvider;
+                var db = scopedServices.GetRequiredService<ApplicationDbContext>();
+                var logger = scopedServices
+                    .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
 
-      services.AddDbContext<ApplicationDbContext>(options =>
-          {
-            options.UseInMemoryDatabase("InMemoryDbForTesting");
-          });
-
-      var sp = services.BuildServiceProvider();
-
-      using (var scope = sp.CreateScope())
-      {
-        var scopedServices = scope.ServiceProvider;
-        var db = scopedServices.GetRequiredService<ApplicationDbContext>();
-        var logger = scopedServices
-                .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
-
-        db.Database.EnsureCreated();
-      }
-    });
-  }
+                db.Database.EnsureCreated();
+            }
+        });
+    }
 }
