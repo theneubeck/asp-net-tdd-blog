@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
 namespace Blog.Tests;
@@ -28,36 +26,15 @@ public class BlogTest : IClassFixture<CustomWebApplicationFactory<Program>>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var responseBody = await response.Content.ReadAsStringAsync();
         // var body = await response.Content.ReadFromJsonAsync<BlogListReponse>();
-        var expected = Utils.ToJson(new { Posts = new List<BlogPostReponse>() });
+        var expected = Utils.ToJson(new { Posts = new List<object>() });
         Assert.Equal(expected, responseBody);
     }
 
 
     [Fact]
-    public async Task BlogIndexTest()
+    public async Task BlogPostNotFoundTest()
     {
-        var postBody = Utils.ToJsonStringContent(new { Title = "Title", Body = "Body" });
-        var response = await _client.PostAsync("/posts", postBody);
-        
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        var parsed = await response.Content.ReadFromJsonAsync<BlogPostReponse>();
-        var responseBody = await response.Content.ReadAsStringAsync();
-
-        var expected = Utils.ToJson(new { Id = parsed.Id, Title = "Title", Body = "Body" });
-        Assert.Equal(expected, responseBody);
+        var response = await _client.GetAsync("/posts/b4576c30-4e2b-4ace-adee-a683e417b706");
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
-}
-
-internal class BlogListReponse
-{
-    public List<BlogPostReponse> Posts { get; set; }
-}
-
-public class BlogPostReponse
-{
-    public string Title { get; set; }
-    public string Type { get; set; }
-
-    public System.Guid Id { get; set; }
-    // public string Body { get; set; }
 }
