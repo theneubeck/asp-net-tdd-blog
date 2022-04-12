@@ -38,7 +38,7 @@ public class BlogPostCreationTest : IClassFixture<CustomWebApplicationFactory>
         Assert.Equal(expected, post);
 
         var listResponse = await _client.GetAsync($"/");
-        var list = await createResponse.Content.ReadAsStringAsync();
+        var list = await listResponse.Content.ReadAsStringAsync();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var expectedList = Utils.ToJson(new
         {

@@ -49,8 +49,9 @@ public class BlogController : ControllerBase
     [HttpPost("/posts")]
     public async Task<IActionResult> Create([FromBody] BlogPost newPost)
     {
+        _logger.LogInformation($"New Post: isValid:{ModelState.IsValid} Title:{newPost.Title}, Body:{newPost.Body}");
         var success = await _blogPostService.CreateBlogPostAsync(newPost);
-        if (success)
+        if (!success)
         {
             return BadRequest(new
             {
@@ -58,7 +59,7 @@ public class BlogController : ControllerBase
             });
         }
 
-        return new ObjectResult(new BlogPost() {Id = Guid.NewGuid(), Title = "Title", Body = "Body"})
+        return new ObjectResult(newPost)
         {
             StatusCode = StatusCodes.Status201Created
         };

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Blog.Tests;
-public class CustomWebApplicationFactory : WebApplicationFactory<Program> 
+public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
