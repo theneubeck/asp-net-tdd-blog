@@ -7,12 +7,12 @@ using Xunit;
 
 namespace Blog.Tests;
 
-public class BlogPostCreationTest : IClassFixture<CustomWebApplicationFactory<Program>>
+public class BlogPostCreationTest : IClassFixture<CustomWebApplicationFactory>
 {
-    private readonly CustomWebApplicationFactory<Program> _factory;
+    private readonly CustomWebApplicationFactory _factory;
     private HttpClient _client;
 
-    public BlogPostCreationTest(CustomWebApplicationFactory<Program> factory)
+    public BlogPostCreationTest(CustomWebApplicationFactory factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();
@@ -37,7 +37,7 @@ public class BlogPostCreationTest : IClassFixture<CustomWebApplicationFactory<Pr
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal(expected, post);
 
-        var listResponse = await _client.GetAsync($"/posts");
+        var listResponse = await _client.GetAsync($"/");
         var list = await createResponse.Content.ReadAsStringAsync();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var expectedList = Utils.ToJson(new

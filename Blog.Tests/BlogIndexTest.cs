@@ -7,12 +7,12 @@ using Xunit;
 
 namespace Blog.Tests;
 
-public class BlogTest : IClassFixture<CustomWebApplicationFactory<Program>>
+public class BlogTest : IClassFixture<CustomWebApplicationFactory>
 {
-    private readonly CustomWebApplicationFactory<Program> _factory;
+    private readonly CustomWebApplicationFactory _factory;
     private HttpClient _client;
 
-    public BlogTest(CustomWebApplicationFactory<Program> factory)
+    public BlogTest(CustomWebApplicationFactory factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();
@@ -36,5 +36,12 @@ public class BlogTest : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         var response = await _client.GetAsync("/posts/b4576c30-4e2b-4ace-adee-a683e417b706");
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task BlogPostMalformedTest()
+    {
+        var response = await _client.GetAsync("/posts/invalid");
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 }
