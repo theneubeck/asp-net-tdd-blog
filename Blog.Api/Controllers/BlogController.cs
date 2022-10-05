@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Blog.Api.Models;
 using Blog.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Blog.Api.Controllers;
 
@@ -50,6 +51,10 @@ public class BlogController : ControllerBase
     public async Task<IActionResult> Create([FromBody] BlogPost newPost)
     {
         _logger.LogInformation($"New Post: isValid:{ModelState.IsValid} Title:{newPost.Title}, Body:{newPost.Body}");
+
+        if (!ModelState.IsValid) {
+            return BadRequest();
+        }
         var success = await _blogPostService.CreateBlogPostAsync(newPost);
         if (!success)
         {
