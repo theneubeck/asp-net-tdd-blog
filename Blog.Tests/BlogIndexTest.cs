@@ -12,13 +12,11 @@ namespace Blog.Tests;
 
 public class BlogTest : IntegrationTestBase
 {
-    private readonly TestWebApplicationFactory _factory;
-    private HttpClient _client;
+    private readonly HttpClient _client;
 
     public BlogTest(TestWebApplicationFactory factory)
     {
-        _factory = factory;
-        _client = _factory.CreateClient();
+        _client = factory.CreateClient();
     }
 
 
