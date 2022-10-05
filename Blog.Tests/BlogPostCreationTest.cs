@@ -23,24 +23,6 @@ public class BlogPostCreationTest : IntegrationTestBase
     [Fact]
     public async Task CreateBlogPostTest()
     {
-        
-        // var client = _factory.WithWebHostBuilder(builder =>
-        // {
-        //     builder.ConfigureServices(services =>
-        //     {
-        //         var serviceProvider = services.BuildServiceProvider();
-        //
-        //         using (var scope = serviceProvider.CreateScope())
-        //         {   
-        //             var scopedServices = scope.ServiceProvider;
-        //             var db = scopedServices
-        //                 .GetRequiredService<BlogDbContext>();
-        //             db.Database.EnsureDeleted();
-        //             db.Database.EnsureCreated();
-        //         }
-        //     });
-        // }).CreateClient();
-        
         var postBody = Utils.ToJsonStringContent(new {Title = "Title", Body = "Body"});
         var createResponse = await _client.PostAsync("/posts", postBody);
 
