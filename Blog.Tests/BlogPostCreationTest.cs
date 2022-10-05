@@ -45,7 +45,7 @@ public class BlogPostCreationTest : IntegrationTestBase
         {
             Posts = new List<BlogPostReponse>()
             {
-                new BlogPostReponse() {Id = parsed.Id, Type = "post", Title = "Title", Body = "Body"}
+                new() {Id = parsed.Id, Type = "post", Title = "Title", Body = "Body"}
             }
         });
         Assert.Equal(expectedList, actualList);
