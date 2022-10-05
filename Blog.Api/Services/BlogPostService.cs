@@ -6,9 +6,9 @@ namespace Blog.Api.Services;
 
 public class BlogPostService : IBlogPostService
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly BlogDbContext _dbContext;
 
-    public BlogPostService(ApplicationDbContext dbContext)
+    public BlogPostService(BlogDbContext dbContext)
     {
         _dbContext = dbContext;
     }
