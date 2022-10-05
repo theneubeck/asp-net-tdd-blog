@@ -3,16 +3,17 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Blog.Tests.Setup;
 using Xunit;
 
 namespace Blog.Tests;
 
-public class BlogTest : IClassFixture<CustomWebApplicationFactory>
+public class BlogTest : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
+    private readonly TestWebApplicationFactory _factory;
     private HttpClient _client;
 
-    public BlogTest(CustomWebApplicationFactory factory)
+    public BlogTest(TestWebApplicationFactory factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();

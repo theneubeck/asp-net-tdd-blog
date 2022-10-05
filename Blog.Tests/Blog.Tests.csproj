@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.2" />
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.9" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -26,4 +28,7 @@
     <ProjectReference Include="..\Blog.Api\Blog.Api.csproj" />
   </ItemGroup>
 
+<!--  <Target Name="DbContainerUp" BeforeTargets="VSTest">-->
+<!--    <Exec Command="docker compose -f ../docker-compose.test.yml up &#45;&#45;wait" />-->
+<!--  </Target>-->
 </Project>

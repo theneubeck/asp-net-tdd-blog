@@ -3,16 +3,17 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Blog.Tests.Setup;
 using Xunit;
 
 namespace Blog.Tests;
 
-public class BlogPostCreationTest : IClassFixture<CustomWebApplicationFactory>
+public class BlogPostCreationTest : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
+    private readonly TestWebApplicationFactory _factory;
     private HttpClient _client;
 
-    public BlogPostCreationTest(CustomWebApplicationFactory factory)
+    public BlogPostCreationTest(TestWebApplicationFactory factory)
     {
         _factory = factory;
         _client = _factory.CreateClient();
@@ -22,6 +23,24 @@ public class BlogPostCreationTest : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateBlogPostTest()
     {
+        
+        // var client = _factory.WithWebHostBuilder(builder =>
+        // {
+        //     builder.ConfigureServices(services =>
+        //     {
+        //         var serviceProvider = services.BuildServiceProvider();
+        //
+        //         using (var scope = serviceProvider.CreateScope())
+        //         {   
+        //             var scopedServices = scope.ServiceProvider;
+        //             var db = scopedServices
+        //                 .GetRequiredService<BlogDbContext>();
+        //             db.Database.EnsureDeleted();
+        //             db.Database.EnsureCreated();
+        //         }
+        //     });
+        // }).CreateClient();
+        
         var postBody = Utils.ToJsonStringContent(new {Title = "Title", Body = "Body"});
         var createResponse = await _client.PostAsync("/posts", postBody);
 
@@ -38,7 +57,7 @@ public class BlogPostCreationTest : IClassFixture<CustomWebApplicationFactory>
         Assert.Equal(expected, post);
 
         var listResponse = await _client.GetAsync($"/");
-        var list = await listResponse.Content.ReadAsStringAsync();
+        var actualList     = await listResponse.Content.ReadAsStringAsync();
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var expectedList = Utils.ToJson(new
         {
@@ -47,6 +66,7 @@ public class BlogPostCreationTest : IClassFixture<CustomWebApplicationFactory>
                 new BlogPostReponse() {Id = parsed.Id, Type = "post", Title = "Title", Body = "Body"}
             }
         });
-        Assert.Equal(expectedList, list);
+        Assert.Equal(expectedList, actualList);
+
     }
 }
