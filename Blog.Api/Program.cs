@@ -1,5 +1,6 @@
 using Blog.Api.Data;
 using Blog.Api.Services;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,8 +20,15 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IBlogPostService, BlogPostService>();
-
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = HttpLoggingFields.All;
+    logging.MediaTypeOptions.AddText("application/javascript");
+    logging.RequestBodyLogLimit = 4096;
+    logging.ResponseBodyLogLimit = 4096;
+});
 var app = builder.Build();
+app.UseHttpLogging();
 InitializeDatabase(app);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -5,11 +5,13 @@ namespace Blog.Api.Models
     public class BlogPost
     {
         public Guid Id { get; set; }
-        
-        public string Type { get;  } = "post";
+
+        public string Type { get; } = "post";
+
+        [Required] public string Title { get; set; }
+
         [Required]
-        public string Title { get; set; }
-        [Required, StringLength(10, ErrorMessage = "Name length can't be more than 10.")]
+        [StringLength(1000, MinimumLength = 10, ErrorMessage = "Body must be at least 10 chars")]
         public string Body { get; set; }
     }
 }

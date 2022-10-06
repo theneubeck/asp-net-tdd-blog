@@ -1,8 +1,8 @@
-using System.Text.Json;
-using System.Text;
 using System;
 using System.Net.Http;
 using System.Net.Mime;
+using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Blog.Tests;

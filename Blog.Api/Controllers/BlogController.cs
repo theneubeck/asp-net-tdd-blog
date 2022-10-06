@@ -50,11 +50,6 @@ public class BlogController : ControllerBase
     [HttpPost("/posts")]
     public async Task<IActionResult> Create([FromBody] BlogPost newPost)
     {
-        _logger.LogInformation($"New Post: isValid:{ModelState.IsValid} Title:{newPost.Title}, Body:{newPost.Body}");
-
-        if (!ModelState.IsValid) {
-            return BadRequest();
-        }
         var success = await _blogPostService.CreateBlogPostAsync(newPost);
         if (!success)
         {
