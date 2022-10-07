@@ -64,5 +64,23 @@ public class BlogController : ControllerBase
             StatusCode = StatusCodes.Status201Created
         };
     }
+    [HttpPut("/posts/{id}")]
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] BlogPost updatePost)
+    {
+        var success = await _blogPostService.UpdateBlogPostAsync(id, updatePost);
+        if (!success)
+        {
+            return BadRequest(new
+            {
+                Errors = new[] {new {Status = 400, Title = "BadRequest", Message = "Invalid post"}}
+            });
+        }
+
+        return new ObjectResult(updatePost)
+        {
+            StatusCode = StatusCodes.Status200OK
+        };
+    }
+
 }
 

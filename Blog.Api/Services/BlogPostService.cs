@@ -31,4 +31,15 @@ public class BlogPostService : IBlogPostService
     {
         return await _dbContext.Posts.Where(x => x.Id == id).FirstOrDefaultAsync();
     }
+
+    public async Task<bool> UpdateBlogPostAsync(Guid id, BlogPost updatePost)
+    {
+        var post = await GetById(id);
+        if (post == null) return false;
+        post.Body = updatePost.Body;
+        post.Title = updatePost.Title;
+
+        var saveResult = await _dbContext.SaveChangesAsync();
+        return saveResult == 1;
+    }
 }
