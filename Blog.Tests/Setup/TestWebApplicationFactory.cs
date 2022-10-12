@@ -18,6 +18,7 @@ namespace Blog.Tests.Setup
 
         public BlogDbContext DbContext => _testServiceScope.Value.ServiceProvider.GetRequiredService<BlogDbContext>();
 
+
         public TestWebApplicationFactory()
         {
             _testServiceScope =
