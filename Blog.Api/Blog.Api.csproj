@@ -17,4 +17,10 @@
     <InternalsVisibleTo Include="Blog.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations" />
+    <Folder Include="Models" />
+    <Folder Include="Services" />
+  </ItemGroup>
+
 </Project>

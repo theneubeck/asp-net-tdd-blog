@@ -1,5 +1,4 @@
 using Blog.Api.Data;
-using Blog.Api.Services;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +18,6 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseSqlite(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IBlogPostService, BlogPostService>();
 builder.Services.AddHttpLogging(logging =>
 {
     logging.LoggingFields = HttpLoggingFields.All;
