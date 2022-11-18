@@ -4,12 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-// Console.WriteLine("**ENV is**");
-// Console.WriteLine(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
-// Console.WriteLine(Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT"));
-// Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,7 +22,6 @@ builder.Services.AddHttpLogging(logging =>
 var app = builder.Build();
 app.UseHttpLogging();
 InitializeDatabase(app);
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

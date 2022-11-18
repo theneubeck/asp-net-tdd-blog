@@ -19,53 +19,19 @@ public class BlogCreationTest : IntegrationTestBase
     {
         _factory = factory;
         _client = factory.CreateClient();
-        _factory.DbContext.Posts.RemoveRange(_factory.DbContext.Posts);
-        _factory.DbContext.SaveChanges();
+        // TO clean db between runs, uncomment this
+        // _factory.DbContext.Posts.RemoveRange(_factory.DbContext.Posts);
+        // _factory.DbContext.SaveChanges();
     }
 
 
     [Fact]
     public async Task CreateBlogPostTest()
     {
-        var response = await _client.PostAsJsonAsync("/posts", new BlogPostCreateRequest
-        {
-            Title = "Title",
-            Body = "Body is allowed"
-        });
+        var response = await _client.PostAsJsonAsync("/posts", new         { Title = "Title", Body = "Body" }); 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
-        var responseBody = await response.Content.ReadFromJsonAsync<BlogPostModel>();
-        var expected = new BlogPostModel {Title = "Title", Body = "Body is allowed", Id = responseBody!.Id};
+        var responseBody = await response.Content.ReadFromJsonAsync<TestBlogPostModel>();
+        var expected = new TestBlogPostModel {Title = "Title", Body = "Body"};
         responseBody.Should().BeEquivalentTo(expected);
-    }
-    
-    [Fact]
-    public async Task CreateBlogWithEmptyTitleReturns400()
-    {
-        
-        var response = await _client.PostAsJsonAsync("/posts", new BlogPostCreateRequest
-        {
-            Title = "",
-            Body = "Bodygdgdgdgdgd"
-        });
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-        var listResponse = await _client.GetFromJsonAsync<BlogPostListModel>("/");
-        listResponse.Posts.Should().BeEmpty();
-
-    }
-    
-    [Fact]
-    public async Task CreateBlogWithBodyShorterThan10CharsReturns400()
-    {
-        
-        var response = await _client.PostAsJsonAsync("/posts", new BlogPostCreateRequest
-        {
-            Title = "",
-            Body = "11111111"
-        });
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        
-        var listResponse = await _client.GetFromJsonAsync<BlogPostListModel>("/");
-        listResponse.Posts.Should().BeEmpty();
     }
 }

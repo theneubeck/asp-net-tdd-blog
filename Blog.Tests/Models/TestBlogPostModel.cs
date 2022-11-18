@@ -2,7 +2,7 @@
 
 namespace Blog.Tests.Models;
 
-public class BlogPostModel
+public class TestBlogPostModel
 {
     public string Title { get; set; }
     public string Body { get; set; }
